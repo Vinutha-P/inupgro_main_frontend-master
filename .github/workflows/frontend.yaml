@@ -1,0 +1,66 @@
+name: Node Frontend Application Build and Deployment Workflow (Dev + Prod)
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - '*'  # Triggers on any tag push
+  workflow_dispatch:
+
+jobs:
+  frontend-deploy:
+    runs-on: [self-hosted, frontend]
+    name: Build and Deploy Development Environment
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Git Stash
+        run: git stash
+        working-directory: /home/azureuser/inupgro-service/inupgro_main_frontend
+        continue-on-error: true
+
+      - name: Pull Latest Changes
+        run: git pull
+        working-directory: /home/azureuser/inupgro-service/inupgro_main_frontend
+
+      - name: Node Frontend Application Build
+        run: docker build -t frontend:${{ github.run_number }} .
+        working-directory: /home/azureuser/inupgro-service/inupgro_main_frontend
+
+      - name: Restart Frontend Container with New Image
+        run: |
+          echo "Stopping and removing any existing frontend container..."
+          if [ "$(docker ps -aq -f name=frontend)" ]; then
+            docker container stop frontend || true
+            docker container rm frontend || true
+          fi
+
+          echo "Starting frontend container with new image..."
+          docker run -d -p 4000:3000 --name frontend \
+            -v /home/azureuser/inupgro-service/config/frontend/.env:/app/.env \
+            frontend:${{ github.run_number }}
+
+  production-build-push:
+    runs-on: [self-hosted, frontend]
+    name: Build & Push to ECR For Production Environment
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Extract Tag Name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Docker Login to ECR
+        run: |
+          aws ecr get-login-password | docker login --username AWS --password-stdin 742172544253.dkr.ecr.ap-south-1.amazonaws.com
+
+      - name: Build Docker Image with Tag
+        run: docker build -t inupgro/frontend:${{ env.TAG_NAME }} .
+        working-directory: /home/azureuser/inupgro-service/inupgro_main_frontend
+
+      - name: Tag and Push Image to ECR
+        run: |
+          docker tag inupgro/frontend:${{ env.TAG_NAME }} 742172544253.dkr.ecr.ap-south-1.amazonaws.com/inupgro/frontend:${{ env.TAG_NAME }}
+          docker push 742172544253.dkr.ecr.ap-south-1.amazonaws.com/inupgro/frontend:${{ env.TAG_NAME }}

@@ -1,0 +1,348 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #EDF3FF;
+  --foreground: #1C315E;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* font-family: Arial, Helvetica, sans-serif; */
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: black !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* .bg-image-find {
+  background-image: url(../assets/Frame-1984078134.png);
+} */
+
+/* .bg-image-cta {
+  background-image: url(../assets/Cta_Web_Bg.png);
+  background-size: cover;  
+  background-position: center;
+  background-repeat: no-repeat
+} */
+
+/* @media (max-width:1020px) {
+  .bg-image-cta {
+    background-image: url(../assets/Cta_Mobile_Bg.png);
+  }
+} */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar {
+  overflow: auto;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 3px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #160d08;
+  border-radius: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 6px;
+}
+
+
+
+@layer components {
+  .side-cards-container {
+    @apply w-[18rem];
+  }  
+  h4{
+    @apply text-xl lg:text-[1.75rem] font-semibold text-deepBlue;
+  }
+  h6 {
+    @apply text-sm sm:text-xl md:text-base font-semibold;
+  }
+  .flex-box-center{
+    @apply flex items-center justify-center;
+  }
+  .flex-box-between{
+    @apply w-full flex items-center justify-between;
+  }
+  .flex-box-start{
+    @apply w-full flex items-center justify-start gap-5;
+  }
+  .flex-between{
+    @apply w-full flex flex-col md:flex-row gap-2 justify-between md:items-center;
+  }
+  .left-part{
+    @apply w-full flex gap-5 xl-1280:w-[78%] xl-1340:w-[79.2%] xl-1430:w-[80.7%] xl-1530:w-[81%] xl-1590:w-[82%]  xl-1680:w-[83%]
+  }
+  .full-width{
+    @apply w-full flex gap-5
+  }
+  .sekleton-light-gray{
+    @apply bg-gray-200 animate-pulse;
+  }
+  .skeleton-medium-gray{
+    @apply bg-gray-300 rounded animate-pulse;
+  }
+  .skeleton-dark-gray{
+    @apply bg-gray-400 animate-pulse;
+  }
+  .about-section{
+    @apply flex flex-col items-center justify-center bg-white pt-4 md:pt-10 md:pb-4 px-0;
+  }
+}
+
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .search-container {
+    width: 400px !important;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 1279px) {
+  .carousel-container {
+    max-width: 70rem !important;
+    height: 15rem !important;
+  }
+
+  .carousel-image {
+    max-width: 70rem !important;
+    width: 100%;
+    height: 15rem !important;
+  }
+}
+
+/* @media (min-width: 400px) and (max-width: 767px) {
+  .side-cards-container {
+    width: 18rem !important;
+    height: 25rem !important;
+  }
+} */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .career-feed-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .career-feed-container>div {
+    width: 48%;
+  }
+
+  section {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1680px) {
+  .responsive-container {
+    width: 78% !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  .responsive-container {
+    width: 100% !important;
+  }
+}
+
+
+/* Enhanced Text Layer Styles for PERFECT PDF Text Selection */
+
+/* COMPLETELY CLEAN TEXT SELECTION SYSTEM */
+
+
+/* ADVANCED PRECISE TEXT SELECTION SYSTEM */
+
+/* ENHANCED TEXT LAYER STYLES FOR PERFECT TEXT SELECTION */
+.textLayer {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  overflow: hidden !important;
+  opacity: 0.2 !important;
+  line-height: 1.0 !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  pointer-events: auto !important;
+  cursor: text !important;
+  z-index: 10 !important;
+  background: transparent !important;
+}
+
+/* PDF text spans */
+.textLayer > span,
+.pdf-text-span {
+  color: transparent !important;
+  position: absolute !important;
+  white-space: pre !important;
+  cursor: text !important;
+  transform-origin: 0% 0% !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  pointer-events: auto !important;
+  font-family: sans-serif !important;
+}
+
+/* Enhanced selection styling */
+.textLayer ::selection {
+  background: rgba(0, 100, 255, 0.3) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.textLayer ::-moz-selection {
+  background: rgba(0, 100, 255, 0.3) !important;
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Highlight styles for search results */
+.textLayer .highlight {
+  margin: -1px;
+  padding: 1px;
+  background-color: rgb(180, 0, 170);
+  border-radius: 4px;
+}
+
+.textLayer .highlight.begin {
+  border-radius: 4px 0px 0px 4px;
+}
+
+.textLayer .highlight.end {
+  border-radius: 0px 4px 4px 0px;
+}
+
+.textLayer .highlight.middle {
+  border-radius: 0px;
+}
+
+.textLayer .highlight.selected {
+  background-color: rgb(0, 100, 0);
+}
+
+/* Ensure all text elements are selectable */
+.textLayer *,
+.textLayer span {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  pointer-events: auto !important;
+}
+
+/* Custom scrollbar for search panel */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Dark mode scrollbar */
+.dark .overflow-y-auto::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Performance optimizations */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-in-out;
+}
+  
+
+/* Ensure parent containers allow full width */
+.book-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Page content styling */
+.demoPage {
+  background-color: white;
+  background-image: linear-gradient(to bottom, #f5f5f5, white);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+  .book-container {
+    padding: 5px;
+  }
+}
