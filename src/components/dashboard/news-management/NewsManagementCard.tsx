@@ -26,7 +26,8 @@ function getChangeStyle(direction: "up" | "down"): {
 } {
   if (direction === "up") {
     return {
-      container: "bg-green/80 backdrop-blur-sm text-[#12B76A] border-[1px] border-[#054F31]",
+      container:
+        "bg-green/80 backdrop-blur-sm text-[#12B76A] border-[1px] border-[#054F31]",
       iconColor: "text-green-600",
       Icon: FaArrowUp,
     };
@@ -40,7 +41,7 @@ function getChangeStyle(direction: "up" | "down"): {
 }
 
 const DashboardStats: React.FC = () => {
-  const newDetails = useSelector((state:RootState)=>state.news.newsDetails)
+  const newDetails = useSelector((state: RootState) => state.news.newsDetails);
   const {
     totalPublishedNews,
     publishedNewsAnalytics,
@@ -89,7 +90,7 @@ const DashboardStats: React.FC = () => {
     },
   ];
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
       {stats?.map((stat, index) => {
         const isDarkCard = stat.dark === true;
         const changeStyle = getChangeStyle(stat.changeDirection);
@@ -97,22 +98,26 @@ const DashboardStats: React.FC = () => {
         return (
           <div
             key={index}
-            className={`${stat.bgColor} ${isDarkCard ? "text-white" : ""
-              } rounded-xl p-5 shadow border flex ${stat.chart
+            className={`${stat.bgColor} ${
+              isDarkCard ? "text-white" : ""
+            } rounded-xl p-5 shadow border flex ${
+              stat.chart
                 ? "justify-between items-center"
                 : "flex-col justify-between relative overflow-hidden"
-              }`}
+            }`}
           >
             <div>
               <h4
-                className={`text-sm font-medium ${isDarkCard ? "text-white" : "text-gray-500"
-                  }`}
+                className={`text-sm font-medium ${
+                  isDarkCard ? "text-white" : "text-gray-500"
+                }`}
               >
                 {stat.title}
               </h4>
               <h2
-                className={`text-3xl font-bold mt-2 ${isDarkCard ? "text-white" : stat.textColor
-                  }`}
+                className={`text-3xl font-bold mt-2 ${
+                  isDarkCard ? "text-white" : stat.textColor
+                }`}
               >
                 {stat.value}
               </h2>
@@ -126,8 +131,9 @@ const DashboardStats: React.FC = () => {
                   {stat.change}
                 </span>
                 <span
-                  className={`text-xs ${isDarkCard ? "text-gray-300" : "text-gray-400"
-                    }`}
+                  className={`text-xs ${
+                    isDarkCard ? "text-gray-300" : "text-gray-400"
+                  }`}
                 >
                   {stat.since}
                 </span>
@@ -143,8 +149,8 @@ const DashboardStats: React.FC = () => {
                     isMain && stat.changeDirection === "up"
                       ? "bg-green"
                       : isMain && stat.changeDirection === "down"
-                        ? "bg-red-500"
-                        : "bg-gray-300";
+                      ? "bg-red-500"
+                      : "bg-gray-300";
 
                   return (
                     <div

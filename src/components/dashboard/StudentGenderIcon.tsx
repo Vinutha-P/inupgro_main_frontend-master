@@ -1,81 +1,85 @@
-// import Image from 'next/image';
+"use client";
 
-// type Student = {
-//   name: string;
-//   gender: 'Male' | 'Female';
-// };
+import Image from "next/image";
+import { GenderStats } from "./overview/AdmissionsChartSection";
 
-// export default function StudentGenderIcon({ student }: { student: Student }) {
-//   const genderIcon =    student.gender === 'Male' ? '/icons/male.png' : '/icons/female.png';
-
-//   return (
-//     <div style={{ display: 'flex', alignItems: 'center' }}>
-//       <Image
-//         src={genderIcon}
-//         alt={`${student.gender} icon`}
-//         width={40}
-//         height={80}
-//       />
-//       <span style={{ marginLeft: '8px' }}>{student.name}</span>
-//     </div>
-//   );
-// }
-
-
-
-
-import Image from 'next/image';
-
-type Student = {
-  gender: 'Male' | 'Female';
-  // count: number;
-  iconColor: string;
-  change: number;
-  changeType: 'increase' | 'decrease';
+type StudentGenderIconProps = {
+  genderStats: GenderStats;
 };
 
-const students: Student[] = [
-  {
-    gender: "Male",
-    // count: 24680,
-    iconColor: "text-blue-300",
-    change: 15,
-    changeType: "increase",
-  },
-  {
-    gender: "Female",
-    // count: 3000,
-    iconColor: "text-yellow-300",
-    change: 8,
-    changeType: "decrease",
-  },
-];
+export default function StudentGenderIcon({
+  genderStats,
+}: StudentGenderIconProps) {
+  const students = [
+    {
+      gender: "Male" as const,
+      count: genderStats.male.count,
+      icon: "/male.png",
+      change: genderStats.male.change.value,
+      changeType: genderStats.male.change.type,
+      iconColor: "#93C5FD", // light blue
+    },
+    {
+      gender: "Female" as const,
+      count: genderStats.female.count,
+      icon: "/female.png",
+      change: genderStats.female.change.value,
+      changeType: genderStats.female.change.type,
+      iconColor: "#FDE047", // yellow
+    },
+  ];
 
-export default function StudentStats() {
   return (
-    <div className="grid grid-cols-1 gap-4">
+    <div className="flex md:flex-col sm:flex-row gap-3 h-full">
       {students.map((student, index) => {
-        const genderIcon = student.gender === "Male" ? "/male.png" : "/female.png";
-        const arrow = student.changeType === "increase" ? "/trend-up.png" : "/trend-down.png";
-        const changeColor = student.changeType === "increase" ? "text-green" : "text-red-600";
+        const arrow =
+          student.changeType === "increase"
+            ? "/trend-up.png"
+            : "/trend-down.png";
+        const changeColor =
+          student.changeType === "increase" ? "#22C55E" : "#EF4444";
 
         return (
           <div
             key={index}
-            className="flex items-center justify-between p-4 bg-white shadow rounded-lg"
+            className="flex-1 rounded-2xl bg-white border border-slate-200 shadow-[0_10px_25px_rgba(15,23,42,0.04)] p-4 md:p-5 flex flex-col justify-between"
           >
-            <div className="flex flex-col gap-4">
-              <div className={student.iconColor + " text-5xl"}>
-                <Image src={genderIcon} alt={student.gender} width={40} height={40} />
+            <div className="text-sky-400 mb-3 md:mb-4">
+              <Image
+                src={student.icon}
+                alt={student.gender}
+                width={40}
+                height={40}
+                className="h-10 w-auto"
+              />
+            </div>
+
+            <div className="mb-3">
+              <div className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
+                {student.count.toLocaleString()}
               </div>
-              <div>
-                <p className="text-lg font-semibold">{student.gender}</p>
-                <p className="text-sm text-gray-500">{student.gender} students</p>
+              <div className="text-sm md:text-base text-slate-400">
+                {student.gender} Students
               </div>
-              <div className={`${changeColor} text-sm font-medium flex items-center gap-1`}>
-                <Image src={arrow} alt={student.gender} width={20} height={20} />
-                 {student.change}% 
-              </div>
+            </div>
+
+            <div
+              className="flex items-center gap-2"
+              style={{ color: changeColor }}
+            >
+              <Image
+                src={arrow}
+                alt={student.changeType}
+                width={16}
+                height={16}
+                className="h-5 w-5"
+              />
+              <span
+                className="text-md font-semibold"
+                style={{ color: changeColor }}
+              >
+                {student.change}
+              </span>
             </div>
           </div>
         );

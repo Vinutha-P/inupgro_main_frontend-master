@@ -1,36 +1,40 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import Logo from "../atom/Logo";
-import Navbar from "../molecule/Navbar";
-import HamburgerMenu from "../molecule/HamburgerMenu";
-import RoundedButton from "../atom/buttons/RoundedButton";
-import IconText from "../atom/IconText";
-import { IoLocationOutline } from "react-icons/io5";
 import Sidebar from "../molecule/SideBar";
 import { useRouter, usePathname } from "next/navigation";
-import { FaPersonDotsFromLine } from "react-icons/fa6";
-import authenticatedUserIcon from "@/assets/Authenticated-userIcon.png";
-import notificationIcon from "@/assets/Notifications-icon.png";
-import Image from "next/image";
-import { logout } from "@/features/auth/authSlice";
 import { useLogoutMutation } from "../../features/api/authApiSlice";
 import Link from "next/link";
+import {
+  FiChevronDown,
+  FiSearch,
+  FiGlobe,
+  FiMenu,
+  FiUser,
+} from "react-icons/fi";
+import {
+  HiOutlineViewGrid,
+  HiOutlineSparkles,
+  HiOutlineLightningBolt,
+  HiOutlineNewspaper,
+} from "react-icons/hi";
+
 const Links = [
-	{ id: 1, name: "Find", link: "/find" },
-	{ id: 2, name: "Educational News", link: "/educational_news" },
-	{ id: 3, name: "Inspiration", link: "/inspiration" },
-	{ id: 4, name: "Careers", link: "/careers" },
+  { id: 1, name: "Explore", link: "/find", icon: HiOutlineViewGrid },
+  { id: 2, name: "Inspiration", link: "/inspiration", icon: HiOutlineSparkles },
+  { id: 3, name: "Career", link: "/careers", icon: HiOutlineLightningBolt },
+  { id: 4, name: "News", link: "/educational_news", icon: HiOutlineNewspaper },
 ];
 const Header = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoadings, setIsLoadings] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [logoutError, setLogoutError] = useState<string | null>(null);
+  const [goalDropdownOpen, setGoalDropdownOpen] = useState(false);
+  const goalDropdownRef = useRef<HTMLDivElement>(null);
 
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -50,7 +54,7 @@ const Header = () => {
     "/onboarding-coaching",
     "/onboarding-school/school-details",
     "/onboarding-college/college-details",
-    "/onboarding-coaching/coaching-details"
+    "/onboarding-coaching/coaching-details",
   ].some((onboardPath) => pathname?.startsWith(onboardPath));
 
   // useEffect(() => {
@@ -81,23 +85,29 @@ const Header = () => {
       ) {
         setIsDropdownOpen(false);
       }
+      if (
+        goalDropdownRef.current &&
+        !goalDropdownRef.current.contains(event.target as Node)
+      ) {
+        setGoalDropdownOpen(false);
+      }
     };
 
-    if (isDropdownOpen) {
+    if (isDropdownOpen || goalDropdownOpen) {
       document.addEventListener("click", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [isDropdownOpen]);
+  }, [isDropdownOpen, goalDropdownOpen]);
 
   const handleLogin = () => {
-      router.push("/login");
+    router.push("/login");
   };
 
   const handleRegister = () => {
-      router.push("/register");
+    router.push("/register");
   };
 
   const handleProfileClick = () => {
@@ -107,14 +117,13 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      setLogoutError(null);
       setIsDropdownOpen(false);
-      localStorage.removeItem("logged_in")
-      localStorage.removeItem("onboarding_skipped")
-      localStorage.removeItem("payment_successfull")
-      localStorage.removeItem("institute-register-address")
-      localStorage.removeItem("institute-register")
-      localStorage.removeItem("selected_type")
+      localStorage.removeItem("logged_in");
+      localStorage.removeItem("onboarding_skipped");
+      localStorage.removeItem("payment_successfull");
+      localStorage.removeItem("institute-register-address");
+      localStorage.removeItem("institute-register");
+      localStorage.removeItem("selected_type");
 
       if (!refreshToken) {
         throw new Error("No refresh token available");
@@ -122,17 +131,18 @@ const Header = () => {
 
       await logoutMutation({ refreshToken }).unwrap();
     } catch (err: any) {
-      setLogoutError(err.message || "Failed to logout");
       console.error("Logout error:", err);
     }
   };
 
+  const goalOptions = ["School", "College", "Coaching", "Career"];
+
   return (
     <header
-      className={`w-full h-[4rem] md:h-[5rem] px-5 lg:px-20 sticky top-0 left-0 flex-box-center z-[9999999]  ${
+      className={`w-full h-[4rem] md:h-[5rem] px-5 lg:px-20 sticky top-0 left-0 flex items-center z-[9999999] ${
         isLoadings
           ? "sekleton-light-gray"
-          : "bg-white shadow-[0px_1px_4px_0px_#0000000F]"
+          : "bg-gradient-to-b from-[#4174cd] to-[#1266be]"
       }`}
     >
       {isMenuOpen && (
@@ -144,102 +154,193 @@ const Header = () => {
           className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
         />
       )}
-      <Sidebar isOpen={isMenuOpen} toggle={toggleMenu} isOnboarding={isOnboarding} />
-      <nav className="w-full max-w-[95rem] flex items-center justify-between">
-        <div className="w-fit min-w-fit h-fit min-h-fit flex items-center gap-2">
+      <Sidebar
+        isOpen={isMenuOpen}
+        toggle={toggleMenu}
+        isOnboarding={isOnboarding}
+      />
+      <nav className="w-full max-w-[95rem] flex items-center justify-between gap-4">
+        {/* Left Section: Logo, Brand Name, Choose Goal Dropdown */}
+        <div className="w-fit min-w-fit h-fit flex items-center gap-3">
           {isLoadings ? (
             <div className="w-[120px] h-[28px] lg:w-[120px] lg:h-[40px] skeleton-medium-gray" />
           ) : (
-            <Logo />
-          )}
-          {isLoadings ? (
-            <div className="w-[100px] h-[28px] lg:w-[160px] lg:h-[40px] skeleton-medium-gray" />
-          ) : (
-            <IconText
-              icon={IoLocationOutline}
-              text="Jaipur, Rajasthan"
-              textColor="#444444"
-              fill="#666666"
-            />
-          )}
-        </div>
-        <div className="w-full hidden lg:flex-box-center">
-          <Navbar isOpen={isMenuOpen} isLoading={isLoadings} Links={Links} isOnboarding={isOnboarding}/>
-        </div>
-        <div className="w-fit min-w-fit hidden lg:flex items-center justify-end gap-4">
-          {isLoadings ? (
-            <div className="w-[100px] h-[40px] skeleton-medium-gray" />
-          ) : isAuthenticated ? (
-            <Image
-              src={notificationIcon}
-              className="mr-2 cursor-pointer"
-              width={24}
-              height={24}
-              alt="Notification icon"
-            />
-          ) : (
-            <RoundedButton
-              withBackground={false}
-              buttonName="Join Us"
-              onClick={handleRegister}
-            />
-          )}
-
-          {isLoadings ? (
-            <div className="w-[100px] h-[40px] skeleton-medium-gray" />
-          ) : isAuthenticated ? (
-            <div className="relative">
-              <Image
-                id="profile-image"
-                src={user?.profilePic || authenticatedUserIcon}
-                className="cursor-pointer rounded-full border"
-                width={56}
-                height={56}
-                alt="suer"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              />
-              {isDropdownOpen && (
-                <div
-                  id="profile-dropdown"
-                  className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+            <>
+              <div className="flex items-center gap-3">
+                <div className="brightness-0 invert">
+                  <Logo />
+                </div>
+              </div>
+              <div className="h-6 w-px bg-white opacity-50"></div>
+              <div className="relative" ref={goalDropdownRef}>
+                <button
+                  onClick={() => setGoalDropdownOpen(!goalDropdownOpen)}
+                  className="flex items-center gap-2 text-white hover:opacity-80 transition-opacity"
                 >
-                  {role == "Student"  && (
+                  <span className="text-sm lg:text-base">Choose Goal</span>
+                  <FiChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                      goalDropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {goalDropdownOpen && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    {goalOptions.map((goal) => (
+                      <button
+                        key={goal}
+                        onClick={() => {
+                          setGoalDropdownOpen(false);
+                          // Handle goal selection logic here
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        {goal}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Central Section: Search Bar */}
+        <div className="hidden lg:flex flex-1 max-w-2xl mx-4">
+          {isLoadings ? (
+            <div className="w-full h-10 skeleton-medium-gray rounded-lg" />
+          ) : (
+            <div className="relative w-full">
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <FiSearch className="w-5 h-5 text-white" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search for School, College, and more..."
+                className="w-full h-10 pl-12 pr-4 bg-white/20  border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Right Section: Navigation Links and Icons */}
+        <div className="w-fit min-w-fit hidden lg:flex items-center justify-end gap-6">
+          {isLoadings ? (
+            <div className="w-[400px] h-[40px] skeleton-medium-gray" />
+          ) : (
+            <>
+              {/* Navigation Links with Icons */}
+              <div className="flex items-center gap-6">
+                {Links.map((link) => {
+                  const Icon = link.icon;
+                  const isActive = pathname === link.link;
+                  return (
                     <Link
-                      href={"/student/book-library/"}
-                      className="w-full block px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                      key={link.id}
+                      href={link.link}
+                      className={`flex items-center gap-2 text-white hover:opacity-80 transition-opacity ${
+                        isActive ? "opacity-100 font-semibold" : "opacity-90"
+                      }`}
                     >
-                      Dashboard
+                      <Icon className="w-5 h-5" />
+                      <span className="text-sm lg:text-base">{link.name}</span>
                     </Link>
-                  )}
+                  );
+                })}
+              </div>
+
+              {/* Menu/User Circular Button */}
+              {isAuthenticated ? (
+                <div className="relative">
                   <button
-                    onClick={handleProfileClick}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                    id="profile-image"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center gap-1 hover:bg-white/30 transition-colors"
                   >
-                    Profile
+                    <FiMenu className="w-4 h-4 text-white" />
+                    <FiUser className="w-4 h-4 text-white" />
+                  </button>
+                  {isDropdownOpen && (
+                    <div
+                      id="profile-dropdown"
+                      className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+                    >
+                      {role == "Student" && (
+                        <Link
+                          href={"/student/book-library/"}
+                          className="w-full block px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                          Dashboard
+                        </Link>
+                      )}
+                      <button
+                        onClick={handleProfileClick}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        Profile
+                      </button>
+                      <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isLoggingOut ? "Logging out..." : "Logout"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleRegister}
+                    className="px-4 py-2 text-white bg-transparent border border-white/30 rounded-lg hover:bg-white/20 transition-colors text-sm font-medium"
+                  >
+                    Join Us
                   </button>
                   <button
-                    onClick={handleLogout}
-                    disabled={isLoggingOut}
-                    className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleLogin}
+                    className="px-4 py-2 text-white bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg hover:bg-white/30 transition-colors text-sm font-medium"
                   >
-                    {isLoggingOut ? "Logging out..." : "Logout"}
+                    Login
                   </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <RoundedButton
-              withBackground={true}
-              buttonName="Login"
-              onClick={handleLogin}
-            />
+
+              {/* Globe Icon Button */}
+              <button className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-colors">
+                <FiGlobe className="w-5 h-5 text-white" />
+              </button>
+            </>
           )}
         </div>
+
+        {/* Mobile Menu */}
         <div className="lg:hidden">
           {isLoadings ? (
             <div className="w-7 h-7 skeleton-medium-gray" />
           ) : (
-            <HamburgerMenu onClick={toggleMenu} isOpen={isMenuOpen} />
+            <button
+              onClick={toggleMenu}
+              className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center"
+            >
+              <div className="relative">
+                <div
+                  className={`w-5 h-0.5 bg-white mb-1.5 transition-transform duration-300 ${
+                    isMenuOpen ? "rotate-45 translate-y-2" : ""
+                  }`}
+                />
+                <div
+                  className={`w-5 h-0.5 bg-white mb-1.5 transition-opacity duration-300 ${
+                    isMenuOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <div
+                  className={`w-5 h-0.5 bg-white mb-1.5 transition-transform duration-300 ${
+                    isMenuOpen ? "-rotate-45 -translate-y-2" : ""
+                  }`}
+                />
+              </div>
+            </button>
           )}
         </div>
       </nav>

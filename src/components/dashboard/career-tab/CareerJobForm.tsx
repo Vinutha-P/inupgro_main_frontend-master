@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import TextEditor from "./TextEditor";
 import MarksheetModal from "../DashboardModal";
 
-
 // Input Component with Props Interface
 interface InputProps {
   label: string;
@@ -60,14 +59,13 @@ export default function PostJobForm() {
     <div className="min-h-screen px-6">
       <div className="bg-white p-8 rounded-lg shadow">
         <div className="border-b-2 border-[#D0D5DD]">
-
           <h2 className="text-2xl font-semibold mb-6">Post a job</h2>
         </div>
         <div className="mt-6">
           <form className="space-y-6">
             {/* Job Title */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-bold text-gray-700 mb-1">
                 Job Title
               </label>
               <input
@@ -80,7 +78,7 @@ export default function PostJobForm() {
             {/* Tags and Job Role */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-1">
                   Tags
                 </label>
                 <input
@@ -90,7 +88,7 @@ export default function PostJobForm() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-bold text-gray-700 mb-1">
                   Job Role
                 </label>
                 <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -101,12 +99,10 @@ export default function PostJobForm() {
 
             {/* Salary Row */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
-                salary
-              </h3>
+              <h3 className="text-md font-bold text-gray-700 mb-2">Salary</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Min Salary
                   </label>
                   <div className="flex items-center border border-gray-200 rounded-md">
@@ -121,7 +117,7 @@ export default function PostJobForm() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Max Salary
                   </label>
                   <div className="flex items-center border border-gray-200 rounded-md">
@@ -136,7 +132,7 @@ export default function PostJobForm() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Salary Type
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -146,15 +142,14 @@ export default function PostJobForm() {
               </div>
             </div>
 
-
             {/* Advance Information */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
+              <h3 className="text-md font-bold text-gray-700 mb-2">
                 Advance Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Education
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -162,7 +157,7 @@ export default function PostJobForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Experience
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -170,7 +165,7 @@ export default function PostJobForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Job Type
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -178,7 +173,7 @@ export default function PostJobForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Vacancies
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -186,7 +181,7 @@ export default function PostJobForm() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Expiration Date
                   </label>
                   <input
@@ -196,7 +191,7 @@ export default function PostJobForm() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-bold text-gray-700 mb-1">
                     Job Level
                   </label>
                   <select className="w-full border border-gray-200 rounded-md p-2.5 text-sm text-gray-500">
@@ -206,16 +201,13 @@ export default function PostJobForm() {
               </div>
             </div>
 
-
             <div className="mt-4">
-              <h2 className="text-sm font-medium text-[#0A150F] mb-2">
+              <h2 className="text-md font-bold text-[#0A150F] mb-2">
                 Description & Responsibility
               </h2>
               <TextEditor title="Description" />
               <TextEditor title="Responsibilities" />
             </div>
-
-
 
             {/* <div className="text-end">
               <button
@@ -234,29 +226,25 @@ export default function PostJobForm() {
               )}
             </div> */}
           </form>
-
-
         </div>
         <div className="text-end mt-5">
-
-              <button
-                className="bg-[#2E90FA] text-white px-6 py-2 rounded-md hover:bg-blue-700"
-                onClick={() => setIsOpen(true)}
-              >
-                Post Job →
-              </button>
-
-            </div>
-            <div className="text-right">
-              {isOpen && (
-                <>
-                  <MarksheetModal setIsOpen={setIsOpen} />
-                </>
-              )}
-              {/* <button className="">
+          <button
+            className="bg-[#2E90FA] text-white px-6 py-2 rounded-md hover:bg-blue-700"
+            onClick={() => setIsOpen(true)}
+          >
+            Post Job →
+          </button>
+        </div>
+        <div className="text-right">
+          {isOpen && (
+            <>
+              <MarksheetModal setIsOpen={setIsOpen} />
+            </>
+          )}
+          {/* <button className="">
                
               </button> */}
-            </div>
+        </div>
       </div>
     </div>
   );
