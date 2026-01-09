@@ -4,7 +4,7 @@
 // const TextEditor = ({title}:{title:string}) => {
 //     return (
 //         <>
-         
+
 //                 <div className="">
 //                     <div className="space-y-1">
 //                         <label className="text-xs font-medium text-gray-600">{title}</label>
@@ -40,19 +40,23 @@
 //                         </div>
 //                     </div>
 //                 </div>
-          
+
 //         </>
 //     )
 // }
 
 // export default TextEditor
 
-
-'use client';
-import React, { useEffect, useRef } from 'react';
+"use client";
+import React, { useEffect, useRef } from "react";
 import {
-  FaBold, FaItalic, FaLink, FaListOl,
-  FaListUl, FaStrikethrough, FaUnderline
+  FaBold,
+  FaItalic,
+  FaLink,
+  FaListOl,
+  FaListUl,
+  FaStrikethrough,
+  FaUnderline,
 } from "react-icons/fa";
 
 interface TextEditorProps {
@@ -64,8 +68,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
 
   // Initialize editor with a paragraph if empty on mount
   useEffect(() => {
-    if (editorRef.current && editorRef.current.innerHTML.trim() === '') {
-      editorRef.current.innerHTML = '<p><br></p>';
+    if (editorRef.current && editorRef.current.innerHTML.trim() === "") {
+      editorRef.current.innerHTML = "<p><br></p>";
     }
   }, []);
 
@@ -85,12 +89,12 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
     editorRef.current.focus();
 
     if (
-      editorRef.current.innerHTML === '' ||
-      editorRef.current.innerHTML === '<br>' ||
-      editorRef.current.innerHTML === '<p><br></p>'
+      editorRef.current.innerHTML === "" ||
+      editorRef.current.innerHTML === "<br>" ||
+      editorRef.current.innerHTML === "<p><br></p>"
     ) {
-      editorRef.current.innerHTML = '<p><br></p>';
-      const p = editorRef.current.querySelector('p');
+      editorRef.current.innerHTML = "<p><br></p>";
+      const p = editorRef.current.querySelector("p");
       if (p) placeCaretAtStart(p);
     }
 
@@ -98,8 +102,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
   };
 
   const insertLink = () => {
-    const url = prompt('Enter URL:');
-    if (url) exec('createLink', url);
+    const url = prompt("Enter URL:");
+    if (url) exec("createLink", url);
   };
 
   return (
@@ -126,8 +130,8 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
       `}</style>
 
       <div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-gray-600">{title}</label>
+        <div className="space-y-2">
+          <label className="text-sm font-bold text-gray-600">{title}</label>
           <div className="border border-gray-200 rounded-md shadow-sm">
             <div
               ref={editorRef}
@@ -142,7 +146,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Bold"
-                onClick={e => { e.preventDefault(); exec('bold'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("bold");
+                }}
               >
                 <FaBold className="w-4 h-4" />
               </button>
@@ -151,7 +158,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Italic"
-                onClick={e => { e.preventDefault(); exec('italic'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("italic");
+                }}
               >
                 <FaItalic className="w-4 h-4" />
               </button>
@@ -160,7 +170,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Underline"
-                onClick={e => { e.preventDefault(); exec('underline'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("underline");
+                }}
               >
                 <FaUnderline className="w-4 h-4" />
               </button>
@@ -169,7 +182,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Strikethrough"
-                onClick={e => { e.preventDefault(); exec('strikeThrough'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("strikeThrough");
+                }}
               >
                 <FaStrikethrough className="w-4 h-4" />
               </button>
@@ -178,7 +194,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Link"
-                onClick={e => { e.preventDefault(); insertLink(); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  insertLink();
+                }}
               >
                 <FaLink className="w-4 h-4" />
               </button>
@@ -187,7 +206,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Bullet List"
-                onClick={e => { e.preventDefault(); exec('insertUnorderedList'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("insertUnorderedList");
+                }}
               >
                 <FaListUl className="w-4 h-4" />
               </button>
@@ -196,7 +218,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ title }) => {
                 type="button"
                 className="hover:text-black"
                 title="Numbered List"
-                onClick={e => { e.preventDefault(); exec('insertOrderedList'); }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  exec("insertOrderedList");
+                }}
               >
                 <FaListOl className="w-4 h-4" />
               </button>

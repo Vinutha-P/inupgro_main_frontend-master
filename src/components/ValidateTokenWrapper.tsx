@@ -15,6 +15,8 @@ import { useGetInstituteProfileQuery } from "@/features/api/academicInstitutes";
 
 const publicRoutes = [
   "/",
+  "/landing",
+  "/landing/",
   "/find",
   "/find/", // for subpaths
   "/educational_news",
@@ -31,7 +33,9 @@ const publicRoutes = [
   "/disclaimer",
   "/contact-us",
   "/privacy-policy",
-  "/terms-conditions"
+  "/terms-conditions",
+  "/feedback-surveys",
+  "/setting",
 ];
 
 const ValidateTokenWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -70,7 +74,7 @@ const ValidateTokenWrapper = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-     if (!isPublic && (!isAuthenticated || !token)) {
+    if (!isPublic && (!isAuthenticated || !token)) {
       router.push("/login");
     }
   }, [pathname, mounted, isAuthenticated, token, isValidating, router]);
@@ -135,7 +139,7 @@ const ValidateTokenWrapper = ({ children }: { children: React.ReactNode }) => {
         dispatch(
           validateCredentialsFailure(
             (instituteError as any).message ||
-            "Failed to fetch institute profile"
+              "Failed to fetch institute profile"
           )
         );
         router.push("/login");
@@ -159,8 +163,6 @@ const ValidateTokenWrapper = ({ children }: { children: React.ReactNode }) => {
     dispatch,
     router,
   ]);
-
-
 
   // Optionally, show a loading state during validation (uncomment if needed)
   if (isValidating || teacherLoading || studentLoading || instituteLoading) {
