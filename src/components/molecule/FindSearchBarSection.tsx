@@ -5,6 +5,7 @@ import FilterRow from "./FilterRow";
 import { useGetHomepageDataQuery } from "../../features/api/homepageApiSlice";
 import { debounce } from "lodash";
 import { LuSearch } from "react-icons/lu";
+import FrameImage from "@/assets/Frame-1984078134.png";
 
 const FindSearchBarSection = ({
   setSearchData,
@@ -79,12 +80,13 @@ const FindSearchBarSection = ({
     <>
       <section className="w-full h-fit hidden lg:flex flex-col">
         <div
-          className={`w-full h-[13.75rem] flex-box-center gap-4 rounded-lg ${isLoadingSkeleton ? "sekleton-light-gray" : ""
-            }`}
+          className={`w-full h-[13.75rem] flex-box-center gap-4 rounded-lg ${
+            isLoadingSkeleton ? "sekleton-light-gray" : ""
+          }`}
           style={{
             backgroundImage: isLoadingSkeleton
               ? "none"
-              : "url(/Frame-1984078134.png)",
+              : `url(${FrameImage.src})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -139,18 +141,18 @@ const FindSearchBarSection = ({
           )}
         </div>
         <div className="mt-5">
-
           <FilterRow onFilterChange={handleFilterChange} />
         </div>
         {!isFetching && !error && searchQuery ? (
           <strong className="text-lg text-steelGray font-semibold mt-2">
-            {totalSchoolsFound} School{totalSchoolsFound !== 1 ? "s" : ""} Found.
+            {totalSchoolsFound} School{totalSchoolsFound !== 1 ? "s" : ""}{" "}
+            Found.
           </strong>
         ) : (
           <>
             <strong className="text-lg text-steelGray font-semibold mt-4">
-              {institutionsCount} Institution{institutionsCount !== 1 ? "s" : ""}{" "}
-              Found.
+              {institutionsCount} Institution
+              {institutionsCount !== 1 ? "s" : ""} Found.
             </strong>
           </>
         )}
@@ -169,7 +171,6 @@ const FindSearchBarSection = ({
         </div>
       </section>
     </>
-
   );
 };
 

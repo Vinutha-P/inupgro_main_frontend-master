@@ -48,17 +48,7 @@ const socialMediaIcons = [
       </svg>
     ),
   },
-  {
-    name: "Google",
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M10.2 8.4c1.1 0 2.1.4 2.9 1.1l2.2-2.2C13.8 6.2 12.1 5.5 10.2 5.5c-2.8 0-5.2 1.9-6.1 4.5l2.5 1.9c.7-2.1 2.6-3.5 4.6-3.5z" />
-        <path d="M4.1 10c0-.7.1-1.4.3-2l-2.5-1.9C1.4 7.3 1 8.6 1 10s.4 2.7 1 3.9l2.5-1.9c-.2-.6-.3-1.3-.3-2z" />
-        <path d="M10.2 14.5c-2 0-3.9-1.4-4.6-3.5l-2.5 1.9c.9 2.6 3.3 4.5 6.1 4.5 1.9 0 3.6-.7 4.9-1.8l-2.2-2.2c-.8.7-1.8 1.1-2.7 1.1z" />
-        <path d="M19 8.5h-1.8v-1.8h-1.8v1.8H13.6v1.8h1.8v1.8h1.8v-1.8H19V8.5z" />
-      </svg>
-    ),
-  },
+
   {
     name: "Instagram",
     icon: (
@@ -183,38 +173,6 @@ const Footer = () => {
                   {social.icon}
                 </a>
               ))}
-            </div>
-
-            {/* App Download Buttons */}
-            <div className="flex flex-row items-center justify-center gap-3">
-              <button className="flex items-center gap-3 bg-black hover:bg-gray-800 text-white px-4 py-3 rounded-lg transition-colors duration-300">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c1.28-2.34 3.55-3.82 6.05-3.86 1.3.03 2.53.48 3.49 1.01 1.05.58 1.98.5 3.05.5 1.08 0 1.78.03 2.73-.39 1.19-.42 2.15-.13 2.95.99-.91.88-2.37 1.48-3.8 1.48-.99 0-1.52-.3-2.6-.3-1.08 0-1.7.3-2.7.3-1.45.01-2.95-.65-3.9-1.58zM13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                </svg>
-                <span className="text-sm font-medium">
-                  Download on the
-                  <br /> App Store
-                </span>
-              </button>
-              <button className="flex items-center gap-3 bg-black hover:bg-gray-800 text-white px-4 py-3 rounded-lg transition-colors duration-300">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M3 20.5v-17c0-.59.34-1.11.84-1.35L13.69 12l-9.85 9.85c-.5-.24-.84-.76-.84-1.35zm13.81-5.38L6.05 21.34l8.49-8.49 2.27 2.27zm-4.81-4.81L6.05 2.66l10.76 6.65-3.81 3.81zM17.8 12l3.95-3.95c.59-.59.59-1.54 0-2.13L17.05.64c-.26-.26-.61-.38-.96-.38-.36 0-.71.12-.97.38L12 3.8 17.8 12z" />
-                </svg>
-                <span className="text-sm font-medium">
-                  GET IT ON
-                  <br /> Google Play
-                </span>
-              </button>
             </div>
           </div>
 

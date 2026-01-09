@@ -34,11 +34,6 @@ const publicRoutes = [
   "/contact-us",
   "/privacy-policy",
   "/terms-conditions",
-  "/dashboard",
-  "/students",
-  "/career",
-  "/news-management",
-  "/publications",
   "/feedback-surveys",
   "/setting",
 ];

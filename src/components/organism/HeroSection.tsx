@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const tabs = [
@@ -9,39 +9,68 @@ const tabs = [
 ];
 
 const HeroSection = () => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-scroll every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % tabs.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleTabClick = (tabId: number) => {
-    if (tabId !== activeTab) {
-      setActiveTab(tabId);
-    }
+    setCurrentIndex(tabId);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % tabs.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + tabs.length) % tabs.length);
   };
 
   const getImageStyle = (index: number) => {
-    const position = index - activeTab;
-    const isActive = position === 0;
+    const position = (index - currentIndex + tabs.length) % tabs.length;
+    let transform = "";
+    let zIndex = 0;
+    let scale = 1;
+    let opacity = 1;
 
-    if (isActive) {
-      return {
-        transform: "rotateY(0deg) translateZ(0px)",
-        opacity: 1,
-        zIndex: 10,
-      };
-    } else if (position > 0) {
-      // Image is to the right (behind, should rotate forward)
-      return {
-        transform: `rotateY(90deg) translateZ(-300px)`,
-        opacity: 0,
-        zIndex: 5,
-      };
+    if (position === 0) {
+      // Center image
+      transform = "translateX(0) rotateY(0deg)";
+      zIndex = 30;
+      scale = 1.1;
+      opacity = 1;
+    } else if (position === 1) {
+      // Right image
+      transform = "translateX(50%) rotateY(-25deg)";
+      zIndex = 20;
+      scale = 0.85;
+      opacity = 1;
+    } else if (position === tabs.length - 1) {
+      // Left image
+      transform = "translateX(-50%) rotateY(25deg)";
+      zIndex = 20;
+      scale = 0.85;
+      opacity = 1;
     } else {
-      // Image is to the left (in front, should rotate backward)
-      return {
-        transform: `rotateY(-90deg) translateZ(-300px)`,
-        opacity: 0,
-        zIndex: 5,
-      };
+      // Hidden images
+      transform = "translateX(300px) rotateY(-60deg)";
+      zIndex = 0;
+      scale = 0.5;
+      opacity = 0;
     }
+
+    return {
+      transform: `${transform} scale(${scale})`,
+      zIndex,
+      opacity,
+      transformStyle: "preserve-3d" as const,
+    };
   };
 
   return (
@@ -50,13 +79,10 @@ const HeroSection = () => {
       <section className="relative w-full flex flex-col items-center justify-center overflow-hidden">
         {/* Hero Background SVG */}
         <div className="relative w-full h-auto">
-          <Image
+          <img
             src="/hero-bg.svg"
             alt="Hero Background"
-            width={1920}
-            height={1156}
             className="w-full h-auto object-cover"
-            priority
           />
 
           {/* Hero Top SVG - positioned at top center of hero-bg */}
@@ -68,45 +94,45 @@ const HeroSection = () => {
             />
           </div>
 
-          {/* Image Carousel with Rotation */}
+          {/* Image Carousel with 3D Rotation */}
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center z-10">
-            <div
-              className="relative w-full max-w-4xl h-80 md:h-[450px]"
-              style={{
-                perspective: "1200px",
-                transformStyle: "preserve-3d",
-              }}
-            >
-              {tabs.map((tab, index) => (
-                <div
-                  key={tab.id}
-                  className="absolute inset-0 flex items-center justify-center"
-                  style={{
-                    ...getImageStyle(index),
-                    transformStyle: "preserve-3d",
-                    transition:
-                      "transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease-in-out",
-                  }}
-                >
-                  <img
-                    src={tab.image}
-                    alt={tab.label}
-                    className="w-auto h-full max-w-full object-contain"
-                  />
-                </div>
-              ))}
+            <div className="relative w-full max-w-3xl h-64 md:h-[320px] flex items-center justify-center">
+              {/* Images Container */}
+              <div
+                className="relative w-full h-full flex items-center justify-center perspective-1000"
+                style={{
+                  perspective: "1200px",
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                {tabs.map((tab, index) => (
+                  <div
+                    key={tab.id}
+                    className="absolute flex items-center justify-center transition-all duration-500 ease-in-out"
+                    style={{
+                      ...getImageStyle(index),
+                    }}
+                  >
+                    <img
+                      src={tab.image}
+                      alt={tab.label}
+                      className="w-auto h-[80%] max-w-[80%] object-contain"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="absolute bottom-1  left-1/2 transform -translate-x-1/2 w-full flex justify-center z-30">
+          <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-full flex justify-center z-30">
             <div className="flex gap-2 md:gap-4 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/30 shadow-lg">
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}
                   className={`px-4 py-2 rounded-full text-sm md:text-base font-semibold transition-all duration-300 ${
-                    activeTab === tab.id
+                    currentIndex === tab.id
                       ? "bg-white text-[#427ecd] shadow-lg scale-105"
                       : "text-white hover:bg-white/20 hover:scale-105"
                   }`}
